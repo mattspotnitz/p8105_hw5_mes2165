@@ -27,6 +27,10 @@ This data set consists of 52179 observations and 12 variables.  Of those variabl
 df_one = janitor::clean_names(df_one)
 df_one_mutate = df_one %>% mutate(city_state = paste(city, state))
 str(df_one_mutate)
-df_one_mutate %>% group_by(city_state, disposition) %>% summarize(n_homicide = n())
-#I need to combine the unsolved homicides
+df_one_mutate_expt = df_one_mutate %>% group_by(city_state) %>% mutate (n_homicide = n()) %>% mutate (n_unsolved = sum(disposition == "Open/No arrest", disposition == "Closed by arrest"))
+view (df_one_mutate_expt)
+```
+I will now try prop.test
+```{r}
+df_one_balt = df_one_mutate_expt %>% filter(city_state == "Baltimore MD")
 ```

@@ -109,27 +109,12 @@ str(df_one_mutate)
     ##  $ city_state   : chr  "Albuquerque NM" "Albuquerque NM" "Albuquerque NM" "Albuquerque NM" ...
 
 ``` r
-df_one_mutate %>% group_by(city_state, disposition) %>% summarize(n_homicide = n())
+df_one_mutate_expt = df_one_mutate %>% group_by(city_state) %>% mutate (n_homicide = n()) %>% mutate (n_unsolved = sum(disposition == "Open/No arrest", disposition == "Closed by arrest"))
+view (df_one_mutate_expt)
 ```
 
-    ## `summarise()` has grouped output by 'city_state'. You can override using the `.groups` argument.
-
-    ## # A tibble: 146 × 3
-    ## # Groups:   city_state [51]
-    ##    city_state     disposition           n_homicide
-    ##    <chr>          <chr>                      <int>
-    ##  1 Albuquerque NM Closed by arrest             232
-    ##  2 Albuquerque NM Closed without arrest         52
-    ##  3 Albuquerque NM Open/No arrest                94
-    ##  4 Atlanta GA     Closed by arrest             600
-    ##  5 Atlanta GA     Closed without arrest         58
-    ##  6 Atlanta GA     Open/No arrest               315
-    ##  7 Baltimore MD   Closed by arrest            1002
-    ##  8 Baltimore MD   Closed without arrest        152
-    ##  9 Baltimore MD   Open/No arrest              1673
-    ## 10 Baton Rouge LA Closed by arrest             228
-    ## # … with 136 more rows
+I will now try prop.test
 
 ``` r
-#I need to combine the unsolved homicides
+df_one_balt = df_one_mutate_expt %>% filter(city_state == "Baltimore MD")
 ```
