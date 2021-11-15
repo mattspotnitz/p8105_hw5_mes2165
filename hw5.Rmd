@@ -1,0 +1,31 @@
+---
+title: "hw5"
+author: "Matthew Spotnitz"
+date: "11/14/2021"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(ggplot2)
+```
+
+```{r}
+df_one = read.csv("homicide-data.csv")
+head(df_one)
+tail(df_one)
+str(df_one)
+view(df_one)
+```
+This data set consists of 52179 observations and 12 variables.  Of those variables, all are characters except for "lat" and "lon", which are integers.
+
+```{r}
+df_one = janitor::clean_names(df_one)
+df_one_mutate = df_one %>% mutate(city_state = paste(city, state))
+str(df_one_mutate)
+df_one_mutate %>% group_by(city_state, disposition) %>% summarize(n_homicide = n())
+```
