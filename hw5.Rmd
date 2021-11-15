@@ -28,4 +28,5 @@ df_one = janitor::clean_names(df_one)
 df_one_mutate = df_one %>% mutate(city_state = paste(city, state))
 str(df_one_mutate)
 df_one_mutate %>% group_by(city_state, disposition) %>% summarize(n_homicide = n())
+#I need to combine the unsolved homicides
 ```

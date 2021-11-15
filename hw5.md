@@ -129,3 +129,7 @@ df_one_mutate %>% group_by(city_state, disposition) %>% summarize(n_homicide = n
     ##  9 Baltimore MD   Open/No arrest              1673
     ## 10 Baton Rouge LA Closed by arrest             228
     ## # … with 136 more rows
+
+``` r
+#I need to combine the unsolved homicides
+```
