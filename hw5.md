@@ -23,8 +23,8 @@ library(ggplot2)
 ```
 
 ``` r
-df_one = read.csv("homicide-data.csv")
-head(df_one)
+homicide_df = read.csv("homicide-data.csv")
+head(homicide_df)
 ```
 
     ##          uid reported_date victim_last victim_first victim_race victim_age
@@ -43,7 +43,7 @@ head(df_one)
     ## 6     Female Albuquerque    NM 35.15111 -106.5378        Open/No arrest
 
 ``` r
-tail(df_one)
+tail(homicide_df)
 ```
 
     ##              uid reported_date victim_last victim_first victim_race victim_age
@@ -62,7 +62,7 @@ tail(df_one)
     ## 52179       Male Washington    DC 38.86669 -76.98241 Closed by arrest
 
 ``` r
-str(df_one)
+str(homicide_df)
 ```
 
     ## 'data.frame':    52179 obs. of  12 variables:
@@ -80,7 +80,7 @@ str(df_one)
     ##  $ disposition  : chr  "Closed without arrest" "Closed by arrest" "Closed without arrest" "Closed by arrest" ...
 
 ``` r
-view(df_one)
+view(homicide_df)
 ```
 
 This data set consists of 52179 observations and 12 variables. Of those
@@ -88,33 +88,38 @@ variables, all are characters except for “lat” and “lon”, which are
 integers.
 
 ``` r
-df_one = janitor::clean_names(df_one)
-df_one_mutate = df_one %>% mutate(city_state = paste(city, state))
-str(df_one_mutate)
+homicide_df = janitor::clean_names(homicide_df)
+homicide_df = homicide_df %>% mutate (
+  city_state = str_c(city, state),
+  resolution = case_when(
+    disposition == "Closed without arrest" ~ "unsolved",
+    disposition == "Open/No arrest" ~ "unsolved",
+    disposition == "Closed by arrest" ~ "solved" 
+  )) %>% 
+  relocate(city_state) %>% 
+  filter(city_state != "TulsaAL")
 ```
 
-    ## 'data.frame':    52179 obs. of  13 variables:
-    ##  $ uid          : chr  "Alb-000001" "Alb-000002" "Alb-000003" "Alb-000004" ...
-    ##  $ reported_date: int  20100504 20100216 20100601 20100101 20100102 20100126 20100127 20100127 20100130 20100210 ...
-    ##  $ victim_last  : chr  "GARCIA" "MONTOYA" "SATTERFIELD" "MENDIOLA" ...
-    ##  $ victim_first : chr  "JUAN" "CAMERON" "VIVIANA" "CARLOS" ...
-    ##  $ victim_race  : chr  "Hispanic" "Hispanic" "White" "Hispanic" ...
-    ##  $ victim_age   : chr  "78" "17" "15" "32" ...
-    ##  $ victim_sex   : chr  "Male" "Male" "Female" "Male" ...
-    ##  $ city         : chr  "Albuquerque" "Albuquerque" "Albuquerque" "Albuquerque" ...
-    ##  $ state        : chr  "NM" "NM" "NM" "NM" ...
-    ##  $ lat          : num  35.1 35.1 35.1 35.1 35.1 ...
-    ##  $ lon          : num  -107 -107 -107 -107 -107 ...
-    ##  $ disposition  : chr  "Closed without arrest" "Closed by arrest" "Closed without arrest" "Closed by arrest" ...
-    ##  $ city_state   : chr  "Albuquerque NM" "Albuquerque NM" "Albuquerque NM" "Albuquerque NM" ...
+Now I will focus on Baltimore, MD
 
 ``` r
-df_one_mutate_expt = df_one_mutate %>% group_by(city_state) %>% mutate (n_homicide = n()) %>% mutate (n_unsolved = sum(disposition == "Open/No arrest", disposition == "Closed by arrest"))
-view (df_one_mutate_expt)
+baltimore_df = homicide_df %>% filter(city_state == "BaltimoreMD")
+
+baltimore_summary = baltimore_df %>% summarize(
+  unsolved = sum(resolution == "unsolved"), n = n()
+) 
+
+baltimore_test = prop.test(
+  x = baltimore_summary %>% pull(unsolved),
+  n = baltimore_summary %>% pull(n)
+)
+
+baltimore_test %>% broom::tidy()
 ```
 
-I will now try prop.test
+    ## # A tibble: 1 × 8
+    ##   estimate statistic  p.value parameter conf.low conf.high method    alternative
+    ##      <dbl>     <dbl>    <dbl>     <int>    <dbl>     <dbl> <chr>     <chr>      
+    ## 1    0.646      239. 6.46e-54         1    0.628     0.663 1-sample… two.sided
 
-``` r
-df_one_balt = df_one_mutate_expt %>% filter(city_state == "Baltimore MD")
-```
+Now I will iterate this function.

@@ -15,22 +15,40 @@ library(ggplot2)
 ```
 
 ```{r}
-df_one = read.csv("homicide-data.csv")
-head(df_one)
-tail(df_one)
-str(df_one)
-view(df_one)
+homicide_df = read.csv("homicide-data.csv")
+head(homicide_df)
+tail(homicide_df)
+str(homicide_df)
+view(homicide_df)
 ```
 This data set consists of 52179 observations and 12 variables.  Of those variables, all are characters except for "lat" and "lon", which are integers.
 
 ```{r}
-df_one = janitor::clean_names(df_one)
-df_one_mutate = df_one %>% mutate(city_state = paste(city, state))
-str(df_one_mutate)
-df_one_mutate_expt = df_one_mutate %>% group_by(city_state) %>% mutate (n_homicide = n()) %>% mutate (n_unsolved = sum(disposition == "Open/No arrest", disposition == "Closed by arrest"))
-view (df_one_mutate_expt)
+homicide_df = janitor::clean_names(homicide_df)
+homicide_df = homicide_df %>% mutate (
+  city_state = str_c(city, state),
+  resolution = case_when(
+    disposition == "Closed without arrest" ~ "unsolved",
+    disposition == "Open/No arrest" ~ "unsolved",
+    disposition == "Closed by arrest" ~ "solved" 
+  )) %>% 
+  relocate(city_state) %>% 
+  filter(city_state != "TulsaAL")
 ```
-I will now try prop.test
+Now I will focus on Baltimore, MD
 ```{r}
-df_one_balt = df_one_mutate_expt %>% filter(city_state == "Baltimore MD")
+baltimore_df = homicide_df %>% filter(city_state == "BaltimoreMD")
+
+baltimore_summary = baltimore_df %>% summarize(
+  unsolved = sum(resolution == "unsolved"), n = n()
+) 
+
+baltimore_test = prop.test(
+  x = baltimore_summary %>% pull(unsolved),
+  n = baltimore_summary %>% pull(n)
+)
+
+baltimore_test %>% broom::tidy()
+
 ```
+Now I will iterate this function.
