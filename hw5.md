@@ -20,6 +20,18 @@ library(tidyverse)
 
 ``` r
 library(ggplot2)
+library(rvest)
+```
+
+    ## 
+    ## Attaching package: 'rvest'
+
+    ## The following object is masked from 'package:readr':
+    ## 
+    ##     guess_encoding
+
+``` r
+library(stringr)
 ```
 
 \#\#Problem 1
@@ -205,6 +217,7 @@ results_df %>%
 ![](hw5_files/figure-gfm/unnamed-chunk-7-1.png)<!-- --> \#\#Problem 2
 
 ``` r
+regexp = "[[:digit:]]+"
 df_files = tibble(
   files = list.files("./data/zip_data/", pattern="*.csv", full.names=TRUE),
 )
@@ -224,7 +237,9 @@ head(df_files)
 ``` r
 for (i in df_files) {
   read_files = purrr::map(i, read.csv)
-  df_files = df_files %>% mutate(tidy_results = purrr::map(read_files, broom::tidy))
+  df_files = df_files %>% mutate(tidy_results = purrr::map(read_files, broom::tidy)) #tidy of the data
+  df_files = df_files %>% mutate (arm = str_detect(i, "con")) %>% mutate(arm = as.integer(arm)) %>% mutate (arm = factor(arm, labels = c('experimental', 'control') )) #extracting control and experimental groups from the names
+df_files = df_files %>% mutate (subject_id = (str_extract(i, regexp))) # extracting subject ids
 }
 ```
 
@@ -294,8 +309,19 @@ for (i in df_files) {
     ## release of broom.
 
 ``` r
-#for (i in df_files) {
- #need to sort by control, experiment, subject id 
+#for (i in files) {
+#  print(i)
+#  print (str_detect(i, "con"))
+
+#}
+  
+  
+ # if (str_detect(i, "con")) {
+ #print("control")
+  #}
+  #if (str_detect(i, "exp")) {
+ #print("experimental")
+#  }
 #}
 view(df_files)
 ```
