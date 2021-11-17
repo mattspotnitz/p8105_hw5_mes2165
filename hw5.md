@@ -224,7 +224,7 @@ head(df_files)
 ``` r
 for (i in df_files) {
   read_files = purrr::map(i, read.csv)
-  tidy_results = purrr::map(read_files, broom::tidy)
+  df_files = df_files %>% mutate(tidy_results = purrr::map(read_files, broom::tidy))
 }
 ```
 
@@ -294,24 +294,10 @@ for (i in df_files) {
     ## release of broom.
 
 ``` r
-for (i in df_files) {
-  df_files = df_files %>% mutate(arm = "control", subject_id = row_number(i))
-}
-head(df_files)
-```
-
-    ## # A tibble: 6 × 3
-    ##   files                       arm     subject_id
-    ##   <chr>                       <chr>        <int>
-    ## 1 ./data/zip_data//con_01.csv control          1
-    ## 2 ./data/zip_data//con_02.csv control          2
-    ## 3 ./data/zip_data//con_03.csv control          3
-    ## 4 ./data/zip_data//con_04.csv control          4
-    ## 5 ./data/zip_data//con_05.csv control          5
-    ## 6 ./data/zip_data//con_06.csv control          6
-
-``` r
-#print(tidy_results)
+#for (i in df_files) {
+ #need to sort by control, experiment, subject id 
+#}
+view(df_files)
 ```
 
 \#\#Problem 3

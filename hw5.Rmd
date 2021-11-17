@@ -106,13 +106,17 @@ df_files = tibble(
 head(df_files)
 for (i in df_files) {
   read_files = purrr::map(i, read.csv)
-  tidy_results = purrr::map(read_files, broom::tidy)
+  df_files = df_files %>% mutate(tidy_results = purrr::map(read_files, broom::tidy))
 }
-for (i in df_files) {
-  df_files = df_files %>% mutate(arm = "control", subject_id = row_number(i))
+for (i in files) {
+  if (str_detect(i, "con")) {
+ print("control")
+  }
+  if (str_detect(i, "exp")) {
+ print("experimental")
+  }
 }
-head(df_files)
-#print(tidy_results)
+view(df_files)
 ```
 ##Problem 3
 ```{r}
