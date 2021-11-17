@@ -108,8 +108,11 @@ for (i in df_files) {
   read_files = purrr::map(i, read.csv)
   tidy_results = purrr::map(read_files, broom::tidy)
 }
-
-print(tidy_results)
+for (i in df_files) {
+  df_files = df_files %>% mutate(arm = "control", subject_id = row_number(i))
+}
+head(df_files)
+#print(tidy_results)
 ```
 ##Problem 3
 ```{r}
