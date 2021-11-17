@@ -101,13 +101,15 @@ results_df %>%
 ##Problem 2
 ```{r}
 df_files = tibble(
-  files = list.files("./data/zip_data/", pattern="*.csv", full.names=TRUE)
+  files = list.files("./data/zip_data/", pattern="*.csv", full.names=TRUE),
 )
 head(df_files)
 for (i in df_files) {
   read_files = purrr::map(i, read.csv)
+  tidy_results = purrr::map(read_files, broom::tidy)
 }
 
+print(tidy_results)
 ```
 ##Problem 3
 ```{r}
