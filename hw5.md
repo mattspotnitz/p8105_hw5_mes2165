@@ -317,7 +317,12 @@ view(df_files)
 Now, I will make a spaghetti plot of the data.
 
 ``` r
-ggplot(data = df_files, aes(x = column, y = trimmed, group = subject_id, color = subject_id)) + geom_line() + facet_grid(.~arm) +  theme(axis.text.x = element_text(angle = 270, vjust= 0.5, hjust = 1))
+ggplot(data = df_files, aes(x = column, y = mean, group = subject_id, color = subject_id)) + geom_line() + facet_grid(.~arm) +
+  labs(
+    title = "Mean values for  experimental and control groups over time",
+    x = "Week",
+    y = "Mean Value"
+  ) + theme(axis.text.x = element_text(angle = 270, vjust= 0.5, hjust = 1))
 ```
 
 ![](hw5_files/figure-gfm/unnamed-chunk-9-1.png)<!-- --> Overall, the
