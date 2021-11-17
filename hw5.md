@@ -333,21 +333,39 @@ values were higher than the control group values.
 \#\#Problem 3
 
 ``` r
+library(tidyverse)
 set.seed(10)
 
 iris_with_missing = iris %>% 
   map_df(~replace(.x, sample(1:150, 20), NA)) %>%
   mutate(Species = as.character(Species))
 
-fill_in_missing = function(vector){
-  if (is.numeric){
-    
-    .....
-    
+iris_with_replace = iris_with_missing %>% replace_na(list("Species" = "virginica"))
+
+iris_with_replace = iris_with_replace %>% 
+  mutate(Sepal.Length = if_else(is.na(Sepal.Length), 
+                         median(Sepal.Length, na.rm = T), 
+                         Sepal.Length))
+#view(iris_with_replace)
+
+for (i in colnames(iris_with_missing)){
+   x = class(iris_with_missing[[i]])
+   print(x)
   }
-  if (is.character){
-    
-    ...
-  }
-}
+```
+
+    ## [1] "numeric"
+    ## [1] "numeric"
+    ## [1] "numeric"
+    ## [1] "numeric"
+    ## [1] "character"
+
+``` r
+#for(i in 1:ncol(data1)) {       # for-loop over columns
+#  data1[ , i] <- data1[ , i] + 10
+#}
+
+###for (i in colnames(df)){
+#   print(class(df[[i]]))
+#}
 ```
