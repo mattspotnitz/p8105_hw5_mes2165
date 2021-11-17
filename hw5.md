@@ -205,34 +205,27 @@ results_df %>%
 ![](hw5_files/figure-gfm/unnamed-chunk-7-1.png)<!-- --> \#\#Problem 2
 
 ``` r
-tibble(
-  files = list.files("./data/zip_data/")
+df_files = tibble(
+  files = list.files("./data/zip_data/", pattern="*.csv", full.names=TRUE)
 )
+head(df_files)
 ```
 
-    ## # A tibble: 20 × 1
-    ##    files     
-    ##    <chr>     
-    ##  1 con_01.csv
-    ##  2 con_02.csv
-    ##  3 con_03.csv
-    ##  4 con_04.csv
-    ##  5 con_05.csv
-    ##  6 con_06.csv
-    ##  7 con_07.csv
-    ##  8 con_08.csv
-    ##  9 con_09.csv
-    ## 10 con_10.csv
-    ## 11 exp_01.csv
-    ## 12 exp_02.csv
-    ## 13 exp_03.csv
-    ## 14 exp_04.csv
-    ## 15 exp_05.csv
-    ## 16 exp_06.csv
-    ## 17 exp_07.csv
-    ## 18 exp_08.csv
-    ## 19 exp_09.csv
-    ## 20 exp_10.csv
+    ## # A tibble: 6 × 1
+    ##   files                      
+    ##   <chr>                      
+    ## 1 ./data/zip_data//con_01.csv
+    ## 2 ./data/zip_data//con_02.csv
+    ## 3 ./data/zip_data//con_03.csv
+    ## 4 ./data/zip_data//con_04.csv
+    ## 5 ./data/zip_data//con_05.csv
+    ## 6 ./data/zip_data//con_06.csv
+
+``` r
+for (i in df_files) {
+  read_files = purrr::map(i, read.csv)
+}
+```
 
 \#\#Problem 3
 

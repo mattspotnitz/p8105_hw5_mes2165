@@ -100,9 +100,14 @@ results_df %>%
 ```
 ##Problem 2
 ```{r}
-tibble(
-  files = list.files("./data/zip_data/")
+df_files = tibble(
+  files = list.files("./data/zip_data/", pattern="*.csv", full.names=TRUE)
 )
+head(df_files)
+for (i in df_files) {
+  read_files = purrr::map(i, read.csv)
+}
+
 ```
 ##Problem 3
 ```{r}
