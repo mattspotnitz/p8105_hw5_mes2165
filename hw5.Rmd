@@ -114,12 +114,16 @@ for (i in df_files) {
 }
 for (files in df_files){
 df_files = df_files %>% mutate (arm = str_detect(files, "con")) %>% mutate (arm = factor(arm, labels = c('experimental', 'control') )) %>% mutate (subject_id = (str_extract(files, regexp))) #extracting control and experimental groups from the names
-#df_files = df_files %>% mutate (subject_id = (str_extract(i, regexp)))
-# df_files = df_files %>% mutate (arm = str_detect(i, "con")) %>% mutate(arm = as.integer(arm)) %>% mutate (arm = factor(arm, labels = c('experimental', 'control') )) #extracting control and experimental groups from the names
-#df_files = df_files %>% mutate (subject_id = (str_extract(i, regexp))) # extracting subject ids
 }
 view(df_files)
 ```
+Now, I will make a spaghetti plot of the data.
+```{r}
+ggplot(data = df_files, aes(x = column, y = trimmed, group = subject_id, color = subject_id)) + geom_line() + facet_grid(.~arm) +  theme(axis.text.x = element_text(angle = 270, vjust= 0.5, hjust = 1))
+
+```
+Overall, the values increased in the experimental group  and remained constant or decreased the control group.  At the end of 8 weeks, the experimental values were higher than the control group values.
+
 ##Problem 3
 ```{r}
 set.seed(10)
