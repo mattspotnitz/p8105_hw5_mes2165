@@ -13,7 +13,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(ggplot2)
 ```
-Problem 1
+##Problem 1
 ```{r}
 homicide_df = read.csv("homicide-data.csv")
 head(homicide_df)
@@ -98,6 +98,29 @@ results_df %>%
   geom_errorbar(aes(ymin=conf.low, ymax = conf.high)) +
   theme(axis.text.x = element_text(angle = 90, vjust= 0.5, hjust = 1))
 ```
-Problem 2
+##Problem 2
 ```{r}
+tibble(
+  files = list.files("./data/zip_data/")
+)
+```
+##Problem 3
+```{r}
+set.seed(10)
+
+iris_with_missing = iris %>% 
+  map_df(~replace(.x, sample(1:150, 20), NA)) %>%
+  mutate(Species = as.character(Species))
+
+fill_in_missing = function(vector){
+  if (is.numeric){
+    
+    .....
+    
+  }
+  if (is.character){
+    
+    ...
+  }
+}
 ```

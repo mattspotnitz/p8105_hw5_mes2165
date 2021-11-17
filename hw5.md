@@ -22,7 +22,7 @@ library(tidyverse)
 library(ggplot2)
 ```
 
-Problem 1
+\#\#Problem 1
 
 ``` r
 homicide_df = read.csv("homicide-data.csv")
@@ -202,4 +202,56 @@ results_df %>%
   theme(axis.text.x = element_text(angle = 90, vjust= 0.5, hjust = 1))
 ```
 
-![](hw5_files/figure-gfm/unnamed-chunk-7-1.png)<!-- --> Problem 2
+![](hw5_files/figure-gfm/unnamed-chunk-7-1.png)<!-- --> \#\#Problem 2
+
+``` r
+tibble(
+  files = list.files("./data/zip_data/")
+)
+```
+
+    ## # A tibble: 20 × 1
+    ##    files     
+    ##    <chr>     
+    ##  1 con_01.csv
+    ##  2 con_02.csv
+    ##  3 con_03.csv
+    ##  4 con_04.csv
+    ##  5 con_05.csv
+    ##  6 con_06.csv
+    ##  7 con_07.csv
+    ##  8 con_08.csv
+    ##  9 con_09.csv
+    ## 10 con_10.csv
+    ## 11 exp_01.csv
+    ## 12 exp_02.csv
+    ## 13 exp_03.csv
+    ## 14 exp_04.csv
+    ## 15 exp_05.csv
+    ## 16 exp_06.csv
+    ## 17 exp_07.csv
+    ## 18 exp_08.csv
+    ## 19 exp_09.csv
+    ## 20 exp_10.csv
+
+\#\#Problem 3
+
+``` r
+set.seed(10)
+
+iris_with_missing = iris %>% 
+  map_df(~replace(.x, sample(1:150, 20), NA)) %>%
+  mutate(Species = as.character(Species))
+
+fill_in_missing = function(vector){
+  if (is.numeric){
+    
+    .....
+    
+  }
+  if (is.character){
+    
+    ...
+  }
+}
+```
