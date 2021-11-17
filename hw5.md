@@ -237,9 +237,9 @@ head(df_files)
 ``` r
 for (i in df_files) {
   read_files = purrr::map(i, read.csv)
-  df_files = df_files %>% mutate(tidy_results = purrr::map(read_files, broom::tidy)) #tidy of the data
-  df_files = df_files %>% mutate (arm = str_detect(i, "con")) %>% mutate(arm = as.integer(arm)) %>% mutate (arm = factor(arm, labels = c('experimental', 'control') )) #extracting control and experimental groups from the names
-df_files = df_files %>% mutate (subject_id = (str_extract(i, regexp))) # extracting subject ids
+  df_files = df_files %>% mutate(tidy_results = purrr::map(read_files, broom::tidy)) %>% unnest(tidy_results) #tidy of the data
+ # df_files = df_files %>% mutate (arm = str_detect(i, "con")) %>% mutate(arm = as.integer(arm)) %>% mutate (arm = factor(arm, labels = c('experimental', 'control') )) #extracting control and experimental groups from the names
+#df_files = df_files %>% mutate (subject_id = (str_extract(i, regexp))) # extracting subject ids
 }
 ```
 
@@ -309,20 +309,6 @@ df_files = df_files %>% mutate (subject_id = (str_extract(i, regexp))) # extract
     ## release of broom.
 
 ``` r
-#for (i in files) {
-#  print(i)
-#  print (str_detect(i, "con"))
-
-#}
-  
-  
- # if (str_detect(i, "con")) {
- #print("control")
-  #}
-  #if (str_detect(i, "exp")) {
- #print("experimental")
-#  }
-#}
 view(df_files)
 ```
 
