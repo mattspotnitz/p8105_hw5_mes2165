@@ -22,6 +22,8 @@ library(tidyverse)
 library(ggplot2)
 ```
 
+Problem 1
+
 ``` r
 homicide_df = read.csv("homicide-data.csv")
 head(homicide_df)
@@ -200,4 +202,4 @@ results_df %>%
   theme(axis.text.x = element_text(angle = 90, vjust= 0.5, hjust = 1))
 ```
 
-![](hw5_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+![](hw5_files/figure-gfm/unnamed-chunk-7-1.png)<!-- --> Problem 2

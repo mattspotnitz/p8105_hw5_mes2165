@@ -13,7 +13,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(ggplot2)
 ```
-
+Problem 1
 ```{r}
 homicide_df = read.csv("homicide-data.csv")
 head(homicide_df)
@@ -97,4 +97,7 @@ results_df %>%
   geom_point() +
   geom_errorbar(aes(ymin=conf.low, ymax = conf.high)) +
   theme(axis.text.x = element_text(angle = 90, vjust= 0.5, hjust = 1))
+```
+Problem 2
+```{r}
 ```
