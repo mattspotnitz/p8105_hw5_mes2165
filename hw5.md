@@ -330,7 +330,7 @@ values increased in the experimental group and remained constant or
 decreased the control group. At the end of 8 weeks, the experimental
 values were higher than the control group values.
 
-\#\#Problem 3
+\#\#Problem 3 I will start by generating the dataset.
 
 ``` r
 library(tidyverse)
@@ -339,7 +339,11 @@ set.seed(10)
 iris_with_missing = iris %>% 
   map_df(~replace(.x, sample(1:150, 20), NA)) %>%
   mutate(Species = as.character(Species))
+```
 
+Here are the basic ways to replcae NA in numeric and character columns.
+
+``` r
 iris_with_replace = iris_with_missing %>% replace_na(list("Species" = "virginica"))
 
 iris_with_replace = iris_with_replace %>% 
@@ -347,25 +351,29 @@ iris_with_replace = iris_with_replace %>%
                          median(Sepal.Length, na.rm = T), 
                          Sepal.Length))
 #view(iris_with_replace)
-
-for (i in colnames(iris_with_missing)){
-   x = class(iris_with_missing[[i]])
-   print(x)
-  }
 ```
 
-    ## [1] "numeric"
-    ## [1] "numeric"
-    ## [1] "numeric"
-    ## [1] "numeric"
-    ## [1] "character"
+Changing the other data frame columns to numeric.
 
 ``` r
-#for(i in 1:ncol(data1)) {       # for-loop over columns
-#  data1[ , i] <- data1[ , i] + 10
-#}
+iris_with_missing = iris_with_missing %>% mutate(Sepal.Length = as.numeric(Sepal.Length), Sepal.Width = as.numeric(Sepal.Width), Petal.Length = as.numeric(Petal.Length), Petal.Width = as.numeric(Petal.Width))
+```
 
-###for (i in colnames(df)){
-#   print(class(df[[i]]))
-#}
+``` r
+prop_test_function = function(vector) {
+if (is.numeric(vector)){
+  vector = if_else(is.na(vector), 
+                         mean(vector, na.rm = T), 
+                         vector)
+  return (vector)
+}
+
+if (is.character(vector)){
+  vector = vector %>% replace_na("virginica")
+return (vector)
+}
+}
+
+function_df = purrr::map(iris_with_missing, prop_test_function)
+view(function_df)
 ```
