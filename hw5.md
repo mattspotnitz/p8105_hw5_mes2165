@@ -114,7 +114,7 @@ homicide_df = homicide_df %>% mutate (
   filter(city_state != "TulsaAL")
 ```
 
-Now I will focus on Baltimore, MD
+Now I will focus on Baltimore, MD.
 
 ``` r
 baltimore_df = homicide_df %>% filter(city_state == "BaltimoreMD")
@@ -203,7 +203,7 @@ results_df =
   select(city_state, estimate, starts_with("conf"))
 ```
 
-Now I will make a plot showing estimates and confidence intervals
+Now I will make a plot showing estimates and confidence intervals.
 
 ``` r
 results_df %>% 
@@ -347,7 +347,7 @@ Here, I am changing the other data frame columns to numeric.
 iris_with_missing = iris_with_missing %>% mutate(Sepal.Length = as.numeric(Sepal.Length), Sepal.Width = as.numeric(Sepal.Width), Petal.Length = as.numeric(Petal.Length), Petal.Width = as.numeric(Petal.Width))
 ```
 
-Now, I will make and iterate the function
+Now, I will make and iterate the function.
 
 ``` r
 prop_test_function = function(vector) {
