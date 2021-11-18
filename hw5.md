@@ -341,23 +341,13 @@ iris_with_missing = iris %>%
   mutate(Species = as.character(Species))
 ```
 
-Here are the basic ways to replcae NA in numeric and character columns.
-
-``` r
-iris_with_replace = iris_with_missing %>% replace_na(list("Species" = "virginica"))
-
-iris_with_replace = iris_with_replace %>% 
-  mutate(Sepal.Length = if_else(is.na(Sepal.Length), 
-                         median(Sepal.Length, na.rm = T), 
-                         Sepal.Length))
-#view(iris_with_replace)
-```
-
-Changing the other data frame columns to numeric.
+Here, I am changing the other data frame columns to numeric.
 
 ``` r
 iris_with_missing = iris_with_missing %>% mutate(Sepal.Length = as.numeric(Sepal.Length), Sepal.Width = as.numeric(Sepal.Width), Petal.Length = as.numeric(Petal.Length), Petal.Width = as.numeric(Petal.Width))
 ```
+
+Now, I will make and iterate the function
 
 ``` r
 prop_test_function = function(vector) {
@@ -366,11 +356,11 @@ if (is.numeric(vector)){
                          mean(vector, na.rm = T), 
                          vector)
   return (vector)
-}
+} ###This code replaces the numeric vectors with the mean.
 
 if (is.character(vector)){
   vector = vector %>% replace_na("virginica")
-return (vector)
+return (vector) ##This code replaces the character vectors with a string.
 }
 }
 
